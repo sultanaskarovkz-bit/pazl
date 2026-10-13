@@ -46,10 +46,10 @@ body{
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
-img,svg{display:block;max-width:100%}
+img,svg,video{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
-h1,h2,h3{line-height:1.15;font-weight:800}
+h1,h2,h3{line-height:1.15;font-weight:800;overflow-wrap:anywhere}
 h2{font-size:22px;margin-bottom:12px}
 h3{font-size:17px}
 p{margin-bottom:10px}
@@ -61,7 +61,7 @@ p{margin-bottom:10px}
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   background:var(--yellow);color:var(--text);font-weight:800;font-size:15px;
   padding:14px 26px;border-radius:999px;box-shadow:0 6px 18px rgba(255,199,44,.35);
-  transition:transform .15s,box-shadow .15s,background .15s;white-space:nowrap;
+  transition:transform .15s,box-shadow .15s,background .15s;white-space:nowrap;max-width:100%;
 }
 .btn:hover{background:var(--yellow2);transform:translateY(-2px);box-shadow:0 10px 24px rgba(255,199,44,.45)}
 .btn:active{transform:translateY(0)}
@@ -86,12 +86,26 @@ p{margin-bottom:10px}
   content:"";position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;
   background:var(--red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 6l8 8M14 6l-8 8' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center/12px no-repeat;
 }
+.gifts{list-style:none}
+.gifts li{position:relative;padding-left:30px;margin-bottom:8px;font-weight:700}
+.gifts li::before{content:"🎁";position:absolute;left:0;top:0;font-size:18px;line-height:1.3}
+.gifts li small{display:block;font-weight:600;color:var(--muted);font-size:12.5px;line-height:1.35}
 .tag{display:inline-block;background:var(--yellow-soft);color:#7A5A00;font-weight:800;font-size:12px;padding:5px 12px;border-radius:999px;letter-spacing:.2px}
+.tag.red{background:var(--red);color:#fff}
 .quote{background:var(--yellow-soft);border-radius:var(--r-s);padding:14px 16px;font-weight:700;display:flex;gap:10px;align-items:center}
 .quote .ic{font-size:20px;flex:none}
 .note{font-size:12px;color:var(--muted);line-height:1.4}
-.bubble{background:#fff;border:1px solid var(--line);border-radius:var(--r-s);padding:12px 14px;font-weight:700;font-size:14px;box-shadow:var(--shadow2)}
-.bubble.soft{background:var(--bg2);border-color:transparent;box-shadow:none;font-weight:600}
+
+/* ============ SCREENSHOTS ============ */
+.shot-img{width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow2);background:#fff;cursor:zoom-in}
+.shots{display:grid;gap:10px}
+.shots.two{grid-template-columns:repeat(2,1fr)}
+.crop{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow2);background:#1b1b24;cursor:zoom-in}
+.crop img{width:100%;max-height:var(--ch,420px);object-fit:cover;object-position:top;border:0;border-radius:0;box-shadow:none;cursor:zoom-in}
+.crop::after{content:"";position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(to bottom,rgba(27,27,36,0),rgba(27,27,36,.85));pointer-events:none}
+.crop .more{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);background:#fff;color:var(--text);font-size:11px;font-weight:800;padding:5px 12px;border-radius:999px;box-shadow:var(--shadow);white-space:nowrap;pointer-events:none;z-index:1}
+.crop.light{background:#fff}
+.crop.light::after{background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(255,255,255,.95))}
 
 /* ============ PLACEHOLDERS ============ */
 .ph{
@@ -103,17 +117,6 @@ p{margin-bottom:10px}
 .ph small{display:block;font-weight:600;font-size:11px;margin-top:3px;color:#A09077}
 .ph .lbl{padding:8px}
 .ph.photo{aspect-ratio:4/5}
-.ph.photo.sq{aspect-ratio:1/1}
-.ph.photo.wide{aspect-ratio:16/10}
-.ph.screen{aspect-ratio:3/4}
-.ph.video{aspect-ratio:16/10}
-.ph.phone{aspect-ratio:1/1}
-.ph .play{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;
-  background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;
-}
-.ph .play::after{content:"";border-left:18px solid var(--text);border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:4px}
-.ph.video .lbl{position:absolute;left:0;right:0;bottom:8px}
 .ph.rounded{border-radius:24px}
 
 /* ============ HEADER ============ */
@@ -138,42 +141,48 @@ p{margin-bottom:10px}
 /* ============ GRID ============ */
 .grid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;padding:18px 0 30px}
 .col{display:flex;flex-direction:column;gap:18px;min-width:0}
+.col > *{min-width:0;max-width:100%}
 @media(min-width:1024px){
   .grid{grid-template-columns:40fr 30fr 30fr;gap:20px;padding:22px 0 40px}
 }
 section[id]{scroll-margin-top:80px}
 
 /* ============ BLOCK 1 HERO ============ */
-.hero{padding:24px}
-.hero .hero-inner{display:grid;grid-template-columns:1fr;gap:20px}
-@media(min-width:640px){.hero .hero-inner{grid-template-columns:1.05fr .95fr}}
-.hero h1{font-size:64px;font-weight:900;letter-spacing:1px;margin:12px 0 2px;line-height:1}
-.hero h2{font-size:24px;margin-bottom:8px}
-.hero .lead{font-weight:700;color:#5A4630}
+.hero{padding:22px}
+.hero-top{display:grid;grid-template-columns:1.1fr .9fr;gap:8px;align-items:end;margin-bottom:12px}
+.hero-top .txt{padding-bottom:6px}
+.hero .logo-3d{width:100%;max-width:300px;height:auto;margin:10px 0 6px}
+.hero h2{font-size:22px;margin:0}
+.hero .photo{position:relative;align-self:end}
+.hero .photo img{width:100%;height:auto;max-height:340px;object-fit:contain;object-position:bottom right}
+.hero .lead{background:#F9DF6A;border-radius:16px;padding:14px 16px;font-weight:700;color:#4A3618;margin:0 0 12px;font-size:15px}
 .hero .desc{font-size:14px;color:var(--muted)}
 .hero .checks{margin:12px 0 16px}
 .hero .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:13px;font-weight:700;color:#5A4630}
 .hero .meta span{display:inline-flex;align-items:center;gap:6px}
 .hero .meta i{width:22px;height:22px;border-radius:50%;background:var(--yellow-soft);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:12px}
-.hero-media{position:relative;display:flex}
-.hero-media .ph{border-radius:24px;flex:1;aspect-ratio:auto;min-height:360px;width:100%}
-.hero-media .hand-note{position:absolute;top:-6px;right:0;font-size:19px;transform:rotate(-6deg);max-width:150px;text-align:center}
 .vid-chip{
-  position:absolute;left:12px;right:12px;bottom:12px;background:rgba(255,255,255,.96);border-radius:16px;
-  padding:12px 12px 12px 66px;box-shadow:var(--shadow);font-size:13px;font-weight:800;min-height:64px;display:flex;flex-direction:column;justify-content:center;
+  display:flex;align-items:center;gap:12px;margin-top:14px;background:var(--bg2);border-radius:16px;
+  padding:10px 14px;font-size:13px;font-weight:800;
 }
-.vid-chip small{font-weight:600;color:var(--muted);font-size:12px}
-.vid-chip .play{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:var(--text);display:flex;align-items:center;justify-content:center}
-.vid-chip .play::after{content:"";border-left:14px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px}
+.vid-chip small{display:block;font-weight:600;color:var(--muted);font-size:12px}
+.vid-chip .play{width:40px;height:40px;border-radius:50%;background:var(--text);display:flex;align-items:center;justify-content:center;flex:none}
+.vid-chip .play::after{content:"";border-left:13px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px}
+@media(min-width:640px){
+  .hero-top{grid-template-columns:1fr 1fr;gap:16px}
+  .hero .logo-3d{max-width:340px}
+  .hero h2{font-size:24px}
+  .hero .photo img{max-height:380px}
+}
 
 /* ============ BLOCK 2 URGENCY ============ */
 .urgency{background:linear-gradient(135deg,#FFF3C4,#FFE9A1);border-radius:var(--r);padding:18px 22px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;border:1px solid #F5DD8C}
-.urgency .txt{flex:1 1 250px}
+.urgency .txt{flex:1 1 260px;display:flex;gap:14px;align-items:flex-start}
 .urgency .timer-wrap{flex:0 0 auto}
-.urgency .txt{display:flex;gap:14px;align-items:flex-start}
 .urgency .clock{width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:var(--shadow2)}
 .urgency h3{font-size:18px;margin-bottom:4px}
-.urgency p{margin:0;font-size:14px;color:#5A4630}
+.urgency p{margin:0 0 8px;font-size:14px;color:#5A4630;font-weight:700}
+.urgency .gifts li{font-size:13.5px;margin-bottom:6px}
 .timer-wrap{background:#fff;border-radius:16px;padding:10px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow2)}
 .timer-wrap .cap{font-size:11px;font-weight:800;color:var(--muted);text-align:center;margin-bottom:6px}
 .timer{display:flex;gap:6px}
@@ -184,28 +193,22 @@ section[id]{scroll-margin-top:80px}
 
 /* ============ BLOCK 3 PAINS ============ */
 .pains h2{font-size:21px}
-.pain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px}
-@media(min-width:560px){.pain-grid{grid-template-columns:repeat(3,1fr)}}
-.pain-grid .bubble{font-size:13px}
-.pain-grid .bubble.soft{font-size:12.5px}
-.pain-note{display:flex;gap:16px;align-items:center;margin-top:16px;background:var(--bg2);border-radius:var(--r-s);padding:14px 16px}
-.pain-note .ph{width:84px;height:84px;flex:none;border-radius:50%;font-size:10px}
+.pain-note{display:flex;gap:12px;align-items:flex-start;margin-top:16px;background:var(--bg2);border-radius:var(--r-s);padding:14px 16px}
+.pain-note .ic{font-size:26px;flex:none}
 .pain-note b{display:block;margin-bottom:3px}
 .pain-note p{margin:0;font-size:14px}
+.pains .illu{margin-top:12px;border-radius:18px;width:100%}
 
 /* ============ CAROUSEL ============ */
 .carousel{position:relative}
 .track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:4px 2px 8px}
 .track::-webkit-scrollbar{display:none}
-.track > *{flex:0 0 calc(50% - 6px);scroll-snap-align:start}
-@media(min-width:560px){.track > *{flex-basis:calc(33.333% - 8px)}}
-.track.c4 > *{flex-basis:calc(50% - 6px)}
-@media(min-width:560px){.track.c4 > *{flex-basis:calc(25% - 9px)}}
+.track > *{flex:0 0 100%;scroll-snap-align:start}
 .dots{display:flex;gap:6px;justify-content:center;margin-top:8px}
 .dots i{width:8px;height:8px;border-radius:50%;background:#DCCFB3;transition:all .2s}
 .dots i.on{background:var(--text);width:20px;border-radius:4px}
 .arrow{
-  position:absolute;top:38%;width:36px;height:36px;border-radius:50%;background:#fff;box-shadow:var(--shadow);
+  position:absolute;top:40%;width:36px;height:36px;border-radius:50%;background:#fff;box-shadow:var(--shadow);
   display:flex;align-items:center;justify-content:center;z-index:2;
 }
 .arrow.prev{left:-10px}.arrow.next{right:-10px}
@@ -213,6 +216,8 @@ section[id]{scroll-margin-top:80px}
 .shot{text-align:center}
 .shot .cap{font-size:12px;font-weight:700;margin-top:8px;color:#5A4630;line-height:1.3}
 .shot .cap small{display:block;color:var(--muted);font-weight:600}
+.story4{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:560px){.story4{grid-template-columns:repeat(4,1fr)}}
 
 /* ============ BLOCK 5 WHO ============ */
 .who .checks li{font-weight:600}
@@ -220,9 +225,9 @@ section[id]{scroll-margin-top:80px}
 .plate .ic{width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;font-size:18px}
 
 /* ============ BLOCK 6 PUZZLE ============ */
-.puzzle-wrap{position:relative;margin:14px auto 6px;max-width:420px}
-.puzzle-wrap .hand-note{text-align:right;font-size:22px;transform:rotate(-4deg);margin:-6px 10px 0 0}
-.puzzle svg{width:100%;height:auto}
+.puzzle-wrap{margin:14px auto 6px;max-width:420px;width:100%}
+.puzzle-wrap .hand-note{text-align:center;font-size:22px;margin-top:4px}
+.puzzle svg{width:100%;max-width:100%;height:auto;display:block}
 .puzzle text{font-family:'Nunito',sans-serif;font-weight:800;fill:var(--text)}
 
 /* ============ BLOCK 7 CHANGE ============ */
@@ -237,48 +242,44 @@ section[id]{scroll-margin-top:80px}
 .cmp li::before{width:16px;height:16px;top:1px;background-size:10px}
 @media(max-width:400px){.cmp{grid-template-columns:1fr}}
 
-/* ============ BLOCK 8 15 MIN ============ */
+/* ============ BLOCK 8 VIDEOS ============ */
 .mini-videos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
-.mini-videos .ph{aspect-ratio:1/1}
-.mini-videos .ph .lbl{bottom:4px}
-.mini-videos .play{width:40px;height:40px}
-.mini-videos .play::after{border-left-width:13px;border-top-width:8px;border-bottom-width:8px}
+.vbox{position:relative;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:480/690;cursor:pointer;box-shadow:var(--shadow2)}
+.vbox video{width:100%;height:100%;object-fit:cover}
+.vbox .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;transition:opacity .2s}
+.vbox .play::after{content:"";border-left:14px solid var(--text);border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px}
+.vbox.playing .play{opacity:0}
 .mini-videos figcaption{text-align:center;font-weight:800;font-size:13px;margin-top:6px}
 .mini-videos figcaption small{display:block;font-weight:600;color:var(--muted);font-size:11px}
 
 /* ============ BLOCK 9 SPEECH ============ */
-.speech .pain-grid{grid-template-columns:1fr 1fr}
-.speech .pain-grid .bubble{padding-left:36px;position:relative}
-.speech .pain-grid .bubble::before{content:"";position:absolute;left:12px;top:14px;width:16px;height:16px;border-radius:50%;background:var(--red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 6l8 8M14 6l-8 8' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center/10px no-repeat}
+.speech h2 .tag{vertical-align:middle;font-size:11px;margin-left:4px}
 .speech .plate{font-weight:600;font-size:14px;align-items:flex-start}
 .speech .plate b{font-weight:800}
 
 /* ============ BLOCK 10 TABLE ============ */
 .tbl{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:12.5px;margin:10px 0 14px}
-.tbl th:first-child,.tbl td:first-child{width:27%}
-.tbl th{text-align:left;font-size:10px;overflow-wrap:anywhere;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);padding:6px 8px;border-bottom:2px solid var(--line)}
+.tbl th:first-child,.tbl td:first-child{width:25%}
+.tbl th{text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.2px;color:var(--muted);padding:6px 6px;border-bottom:2px solid var(--line);line-height:1.2;vertical-align:bottom}
 .tbl td{padding:9px 7px;vertical-align:top;border-bottom:1px solid var(--line);overflow-wrap:anywhere;hyphens:auto}
 .tbl td:first-child{font-weight:800}
-.tbl td:nth-child(2){color:var(--muted)}
+.tbl td:nth-child(2){color:#8A3A3A;background:var(--red-soft)}
 .tbl td:nth-child(3){font-weight:600;background:var(--green-soft)}
 .tbl tr:last-child td{border-bottom:0}
-.tbl tr:first-child td:nth-child(3){border-radius:10px 10px 0 0}
-.tbl tr:last-child td:nth-child(3){border-radius:0 0 10px 10px}
-
-
-.story4{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-@media(min-width:560px){.story4{grid-template-columns:repeat(4,1fr)}}
+.tbl tr:first-child td:nth-child(2),.tbl tr:first-child td:nth-child(3){border-radius:10px 10px 0 0}
+.tbl tr:last-child td:nth-child(2),.tbl tr:last-child td:nth-child(3){border-radius:0 0 10px 10px}
 
 /* ============ BLOCK 13 AUTHOR ============ */
 .author .top{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
-.author .top .ph{width:104px;flex:none;border-radius:16px}
+.author .top img{width:120px;flex:none;border-radius:16px;aspect-ratio:4/5;object-fit:cover}
 .author .name{font-size:16px;font-weight:900;margin-bottom:2px}
 .author .role{font-size:13px;color:var(--muted);font-weight:700;margin-bottom:8px}
 .author .top p{font-size:12.5px;margin:0}
 .author p.about{font-size:13px}
-.creds{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
-.creds div{text-align:center;font-size:10.5px;font-weight:700;color:#5A4630;line-height:1.25}
-.creds .ic{width:40px;height:40px;border-radius:12px;background:var(--yellow-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:18px}
+.families{display:flex;align-items:center;gap:14px;background:var(--yellow-soft);border-radius:16px;padding:14px 16px;margin-top:12px}
+.families .num{font-size:30px;font-weight:900;line-height:1;white-space:nowrap}
+.families .num small{display:block;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.3px}
+.families p{margin:0;font-size:13.5px;font-weight:700;line-height:1.3}
 
 /* ============ BLOCK 14 PROGRAM ============ */
 .modules{list-style:none;display:flex;flex-direction:column;gap:8px}
@@ -288,34 +289,33 @@ section[id]{scroll-margin-top:80px}
 .modules span{font-size:12px;color:var(--muted);font-weight:600}
 .modules li.more{background:var(--bg2);border-style:dashed;border-color:#DCCFB3}
 .updates{margin-top:14px;background:var(--mint-soft);border-radius:14px;padding:12px 14px}
-.updates h4{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#22925A;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.updates h4 em{font-style:normal;background:var(--green);color:#fff;font-size:10px;padding:2px 7px;border-radius:999px}
+.updates h4{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:#22925A;margin-bottom:8px;display:flex;align-items:flex-start;gap:8px;line-height:1.3}
+.updates h4 em{font-style:normal;font-size:16px;flex:none;line-height:1}
 .updates li{font-size:12.5px;font-weight:600;margin-bottom:6px}
 .updates li:last-child{margin-bottom:0}
 
 /* ============ BLOCK 15 INSIDE ============ */
-.inside .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center}
+.inside .checks{margin-top:14px}
 .inside .checks li{font-size:13px;font-weight:600;margin-bottom:7px}
 .inside .checks li::before{width:18px;height:18px;background-size:12px}
 .inside .note{margin-top:10px}
 
-/* ============ BLOCK 16 MORE REVIEWS ============ */
-.rev4{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
-@media(min-width:1024px){.rev4{grid-template-columns:repeat(2,1fr)}}
-.rev4 .ph{aspect-ratio:1/1.05;font-size:11px}
-
-/* ============ BLOCK 17 BONUS ============ */
+/* ============ BLOCK 17 GIFTS ============ */
 .bonus{background:linear-gradient(160deg,#FFFBEF,#FFF3D6);border-color:#F5DD8C}
-.bonus .head{display:flex;gap:10px;align-items:center;margin-bottom:6px}
+.bonus .head{display:flex;gap:10px;align-items:center;margin-bottom:12px}
 .bonus .head svg{width:34px;height:34px;flex:none}
-.bonus .head h3{font-size:16px}
-.bonus .price{font-size:13px;font-weight:700;margin-bottom:10px}
-.bonus .price s{color:var(--muted)}
-.bonus .price em{font-style:normal;color:var(--red);font-weight:800}
-.bonus .row{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;align-items:center}
-.bonus .checks li{font-size:13px;font-weight:600;margin-bottom:7px}
-.bonus .imgwrap{position:relative}
-.bonus .hand-note{position:absolute;left:-6px;bottom:-4px;right:-6px;text-align:center;font-size:17px;transform:rotate(-5deg);background:rgba(255,255,255,.9);border-radius:10px;padding:3px 6px;line-height:1.05}
+.bonus .head h3{font-size:17px}
+.gift-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.gift-list > li{background:#fff;border-radius:14px;padding:12px 14px 12px 42px;position:relative;border:1px solid #F5DD8C}
+.gift-list > li::before{content:"🎁";position:absolute;left:12px;top:12px;font-size:20px}
+.gift-list b{display:block;font-size:14px;line-height:1.3}
+.gift-list small{display:block;font-size:12px;color:var(--muted);font-weight:600;margin-top:3px;line-height:1.35}
+.gift-list .pr{display:block;margin-top:6px;font-size:13px;font-weight:700}
+.gift-list .pr s{color:var(--muted)}
+.gift-list .pr em{font-style:normal;color:var(--red);font-weight:800}
+.gift-list .checks{margin-top:8px}
+.gift-list .checks li{padding-left:26px;font-size:12.5px;font-weight:600;margin-bottom:5px}
+.gift-list .checks li::before{width:18px;height:18px;background-size:12px}
 
 /* ============ BLOCK 18 PRICE ============ */
 .price h2{margin-bottom:8px}
@@ -369,6 +369,12 @@ section[id]{scroll-margin-top:80px}
 .final .brand p{font-size:13.5px;color:#5A4630;font-weight:600;margin-bottom:14px}
 .footer{text-align:center;font-size:12px;color:var(--muted);padding:14px 16px 20px;border-top:1px solid var(--line)}
 
+/* ============ LIGHTBOX ============ */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(20,15,8,.9);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:20px 12px 60px;cursor:zoom-out}
+.lb.open{display:flex}
+.lb img{max-width:min(720px,100%);height:auto;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.lb .x{position:fixed;top:14px;right:14px;width:42px;height:42px;border-radius:50%;background:#fff;color:var(--text);font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+
 /* ============ FLOATING ============ */
 .fab{position:fixed;right:16px;z-index:60;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.18);transition:transform .15s}
 .fab:hover{transform:scale(1.06)}
@@ -396,7 +402,7 @@ section[id]{scroll-margin-top:80px}
   .proof{bottom:calc(78px + env(safe-area-inset-bottom));max-width:calc(100% - 100px)}
 }
 
-/* ============ RESPONSIVE HEADER ============ */
+/* ============ RESPONSIVE ============ */
 @media(max-width:1023px){
   .hdr .tagline{display:none}
   .nav{display:none}
@@ -404,10 +410,7 @@ section[id]{scroll-margin-top:80px}
   .hdr .btn{display:none}
 }
 @media(max-width:640px){
-  .hero .hand-note{display:none}
   .hero{padding:18px}
-  .hero h1{font-size:54px}
-  .hero h2{font-size:21px}
   h2{font-size:20px}
   .card{padding:18px}
   .arrow.prev{left:-6px}.arrow.next{right:-6px}
@@ -453,36 +456,34 @@ section[id]{scroll-margin-top:80px}
 
   <!-- БЛОК 1. ПЕРВЫЙ ЭКРАН -->
   <section class="card hero" id="about">
-    <div class="hero-inner">
-      <div>
+    <div class="hero-top">
+      <div class="txt">
         <span class="tag">Для мам детей от 1 года до 3,5 лет</span>
-        <h1>ПАЗЛ</h1>
+        <h1><img class="logo-3d" src="img/logo-3d.webp" alt="ПАЗЛ" width="900" height="266"></h1>
         <h2>Теперь вы знаете, как заниматься с ребёнком</h2>
-        <p class="lead">Чтобы каждый день помогать ему развиваться через игру и быть спокойной, что вы закладываете важную базу для его будущего.</p>
-        <p class="desc">Собрана детским нейропсихологом. Без специальных знаний, без часов на подготовку: 15–20 минут в день в обычной жизни, на кухне, на прогулке, в ванной.</p>
-        <ul class="checks yellow">
-          <li>Во что играть</li>
-          <li>Что говорить</li>
-          <li>Как развивать речь</li>
-          <li>Какие навыки сейчас важны</li>
-          <li>Как встроить развитие в обычную жизнь</li>
-        </ul>
-        <a href="#price" class="btn">Хочу систему развития →</a>
-        <div class="meta">
-          <span><i>∞</i> Доступ навсегда</span>
-          <span><i>🕐</i> Начать можно сегодня же</span>
-        </div>
       </div>
-      <div class="hero-media">
-        <div class="hand-note">Больше чем просто игры. Это уверенность в каждом дне ♡</div>
-        <div class="ph photo rounded" data-slot="hero-photo"><span class="lbl">ЗДЕСЬ ФОТО<small>мама с ребёнком (вертикальное)</small></span></div>
-        <a href="#video" class="vid-chip" data-slot="hero-video">
-          <span class="play"></span>
-          Посмотрите, как проходят занятия
-          <small>Короткое видео (без звука)</small>
-        </a>
+      <div class="photo">
+        <img src="img/hero-photo.webp" alt="Айгерим с ребёнком и пазлами" width="900" height="754">
       </div>
     </div>
+    <p class="lead">Чтобы каждый день помогать ему развиваться через игру и быть спокойной, что вы закладываете важную базу для его будущего.</p>
+    <p class="desc">Собрана детским нейропсихологом. Без специальных знаний, без часов на подготовку: 15–20 минут в день в обычной жизни, на кухне, на прогулке, в ванной.</p>
+    <ul class="checks yellow">
+      <li>Во что играть</li>
+      <li>Что говорить</li>
+      <li>Как развивать речь</li>
+      <li>Какие навыки сейчас важны</li>
+      <li>Как встроить развитие в обычную жизнь</li>
+    </ul>
+    <a href="#price" class="btn">Хочу систему развития →</a>
+    <div class="meta">
+      <span><i>∞</i> Доступ навсегда</span>
+      <span><i>🕐</i> Начать можно сегодня же</span>
+    </div>
+    <a href="#video" class="vid-chip">
+      <span class="play"></span>
+      <span>Посмотрите, как проходят занятия<small>Короткие видео (без звука)</small></span>
+    </a>
   </section>
 
   <!-- БЛОК 2. ПОЛОСА СРОЧНОСТИ -->
@@ -493,12 +494,17 @@ section[id]{scroll-margin-top:80px}
       </div>
       <div>
         <h3>Сейчас идёт открытый набор!</h3>
-        <p>При регистрации до 25 сентября бонусный модуль «Забота о маме» (обычная цена 7 900 ₸ / ~1 200 ₽ / ~15 $) в подарок!</p>
+        <p>При покупке в ближайшие 24 часа в подарок:</p>
+        <ul class="gifts">
+          <li>Бонусный модуль «Забота о маме»</li>
+          <li>Гайд по настольным играм от 1 до 3 лет<small>с ссылками на WB</small></li>
+          <li>30+ нейроигр на всестороннее развитие ребёнка<small>вестибулярная, проприоцептивная системы, схема тела, развитие межполушарных связей, мозжечковая стимуляция</small></li>
+        </ul>
       </div>
     </div>
     <div class="timer-wrap">
       <div>
-        <div class="cap">До конца набора осталось:</div>
+        <div class="cap">До конца акции осталось:</div>
         <div class="timer" data-timer>
           <div><b data-d>00</b><span>дней</span></div>
           <div><b data-h>00</b><span>часов</span></div>
@@ -513,24 +519,21 @@ section[id]{scroll-margin-top:80px}
   <!-- БЛОК 3. БОЛИ -->
   <section class="card pains">
     <h2>Возможно, вы тоже каждый день думаете:<br>«А что мне вообще делать с ним сегодня?»</h2>
-    <div class="pain-grid">
-      <div class="bubble">«Хочу заниматься с ребёнком, но не знаю, во что играть и что говорить»</div>
-      <div class="bubble">«Не понимаю, как правильно его развивать»</div>
-      <div class="bubble">«Не знаю, как заинтересовать ребёнка занятиями»</div>
-      <div class="bubble">«Мало говорит. Не понимаю, что делать»</div>
-    </div>
-    <div class="pain-grid">
-      <div class="bubble soft">«Информации так много, что уже началась паника»</div>
-      <div class="bubble soft">«Вроде что-то делаем, но системности нет»</div>
-      <div class="bubble soft">«Особенно сложно, когда я устала и мало сил»</div>
+    <div class="shots">
+      <img class="shot-img" src="img/pain-4.jpg" alt="Хочу заниматься с ребенком. Я не знаю во что играть. Что говорить" loading="lazy" data-zoom>
+      <img class="shot-img" src="img/pain-1.jpg" alt="Нет в голове комплексного плана по развитию" loading="lazy" data-zoom>
+      <img class="shot-img" src="img/pain-2.jpg" alt="Не знаю как правильно его мотивировать" loading="lazy" data-zoom>
+      <img class="shot-img" src="img/pain-3.jpg" alt="Что мало слов говорит. Не знаю как и во что играть" loading="lazy" data-zoom>
+      <img class="shot-img" src="img/pain-5.jpg" alt="Мне нужна система, а то у меня началась паника" loading="lazy" data-zoom>
     </div>
     <div class="pain-note">
-      <div class="ph" data-slot="pains-illustration"><span class="lbl">ИЛЛЮСТРАЦИЯ<small>женщина</small></span></div>
+      <div class="ic">💛</div>
       <div>
         <b>И это нормально объяснимо.</b>
         <p>Информации о развитии ребёнка сегодня очень много. Но 100 сохранённых Reels, это не система развития.</p>
       </div>
     </div>
+    <img class="illu" src="img/pains-illustration.jpg" alt="Reels, курсы, советы подруг, статьи, Pinterest, покупки: информации много, системы нет" width="900" height="1350" loading="lazy">
   </section>
 
   <!-- БЛОК 4. РЕАЛЬНЫЕ ВОПРОСЫ И СООБЩЕНИЯ МАМ -->
@@ -541,24 +544,20 @@ section[id]{scroll-margin-top:80px}
       <button class="arrow next" aria-label="Вперёд"><svg viewBox="0 0 16 16" fill="none" stroke="#3B2A17" stroke-width="2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></button>
       <div class="track">
         <figure class="shot">
-          <div class="ph screen" data-slot="chat-1"><span class="lbl">ЗДЕСЬ СКРИН<small>«Хочу заниматься с ребёнком. Играться с ним. Я не знаю, во что играть. Что говорить?»</small></span></div>
-          <figcaption class="cap">Мама, ребёнок 1,8 лет<small>Астана</small></figcaption>
+          <img class="shot-img" src="img/q-1.jpg" alt="Сыну 1 и 4 месяца. Говорит только да, нет. Хочу начать с ним активнее заниматься" loading="lazy" data-zoom>
+          <figcaption class="cap">Мама, сын 1 год 4 мес<small>Италия</small></figcaption>
         </figure>
         <figure class="shot">
-          <div class="ph screen" data-slot="chat-2"><span class="lbl">ЗДЕСЬ СКРИН<small>«Мне нужна система, а то у меня началась паника и хаотичная информация»</small></span></div>
-          <figcaption class="cap">Мама, ребёнок 2,3 года<small>Алматы</small></figcaption>
+          <img class="shot-img" src="img/q-3.jpg" alt="Дочке 1 год и 5 мес. Говорит несколько слов, очень хочу правильно её развивать" loading="lazy" data-zoom>
+          <figcaption class="cap">Мама, дочка 1 год 5 мес<small>Ставрополь</small></figcaption>
         </figure>
         <figure class="shot">
-          <div class="ph screen" data-slot="chat-3"><span class="lbl">ЗДЕСЬ СКРИН<small>«Не понимаю во что играть, особенно когда уставшая и мало сил»</small></span></div>
-          <figcaption class="cap">Мама, ребёнок 2 года<small>Караганда</small></figcaption>
+          <img class="shot-img" src="img/q-4.jpg" alt="Сыну 2 г 10 мес. Очень хочу услышать первые слова и фразы" loading="lazy" data-zoom>
+          <figcaption class="cap">Мама, сын 2 года 10 мес<small>Ростовская область</small></figcaption>
         </figure>
         <figure class="shot">
-          <div class="ph screen" data-slot="chat-4"><span class="lbl">ЗДЕСЬ СКРИН<small>ещё одна переписка</small></span></div>
-          <figcaption class="cap">Мама, ребёнок 1,5 года<small>Шымкент</small></figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="ph screen" data-slot="chat-5"><span class="lbl">ЗДЕСЬ СКРИН<small>ещё одна переписка</small></span></div>
-          <figcaption class="cap">Мама, ребёнок 3 года<small>Актобе</small></figcaption>
+          <img class="shot-img" src="img/q-2.jpg" alt="Есть огромное желание слышать красивую и богатую речь своего малыша" loading="lazy" data-zoom>
+          <figcaption class="cap">Мама, про речь малыша<small>Instagram</small></figcaption>
         </figure>
       </div>
       <div class="dots"></div>
@@ -591,39 +590,36 @@ section[id]{scroll-margin-top:80px}
     <p>Вы сохраняете Reels, пробуете отдельные советы, покупаете игрушки, но всё это не складывается в целую картину. Без системы сложно понять, что действительно важно сейчас, а что подождёт.</p>
     <div class="puzzle-wrap">
       <div class="puzzle">
-        <svg viewBox="0 0 420 340" role="img" aria-label="Пазл: система развития ребёнка">
+        <svg viewBox="0 0 420 360" width="420" height="360" role="img" aria-label="Пазл: из чего складывается развитие ребёнка">
           <defs>
             <filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#5A3C14" flood-opacity=".12"/></filter>
           </defs>
-          <!-- segments -->
           <g filter="url(#sh)">
-            <rect x="70" y="20" width="110" height="52" rx="26" fill="#FFE9DC"/>
-            <rect x="200" y="14" width="130" height="52" rx="26" fill="#E7F0FB"/>
-            <rect x="300" y="100" width="110" height="52" rx="26" fill="#FBE7F0"/>
-            <rect x="8" y="110" width="100" height="52" rx="26" fill="#E4F6F0"/>
-            <rect x="300" y="200" width="110" height="52" rx="26" fill="#EEE8FB"/>
-            <rect x="8" y="215" width="120" height="52" rx="26" fill="#FFF1B8"/>
-            <rect x="120" y="278" width="180" height="52" rx="26" fill="#E6F7EC"/>
+            <rect x="60" y="20" width="110" height="50" rx="25" fill="#FFE9DC"/>
+            <rect x="215" y="14" width="130" height="50" rx="25" fill="#E7F0FB"/>
+            <rect x="302" y="110" width="112" height="50" rx="25" fill="#FBE7F0"/>
+            <rect x="6" y="118" width="100" height="50" rx="25" fill="#E4F6F0"/>
+            <rect x="306" y="220" width="104" height="50" rx="25" fill="#EEE8FB"/>
+            <rect x="8" y="228" width="116" height="50" rx="25" fill="#FFF1B8"/>
+            <rect x="118" y="298" width="184" height="50" rx="25" fill="#E6F7EC"/>
           </g>
-          <!-- connectors -->
           <g stroke="#DCCFB3" stroke-width="2" stroke-dasharray="4 5" fill="none">
-            <path d="M125 72 L170 125"/><path d="M265 66 L245 118"/><path d="M300 126 L280 145"/><path d="M108 136 L140 150"/><path d="M300 226 L275 205"/><path d="M128 241 L160 210"/><path d="M210 278 L210 240"/>
+            <path d="M118 70 L165 122"/><path d="M280 64 L258 118"/><path d="M302 136 L290 150"/><path d="M106 143 L138 158"/><path d="M306 246 L288 222"/><path d="M124 252 L156 224"/><path d="M210 298 L210 262"/>
           </g>
-          <!-- center puzzle piece -->
           <g filter="url(#sh)">
-            <path d="M150 120h40a10 10 0 0 1 20 0h40a8 8 0 0 1 8 8v36a10 10 0 0 1 0 20v36a8 8 0 0 1-8 8h-40a10 10 0 0 1-20 0h-40a8 8 0 0 1-8-8v-36a10 10 0 0 1 0-20v-36a8 8 0 0 1 8-8z" fill="#FFD84D"/>
+            <path d="M138 118h48a12 12 0 0 1 24 0h48a8 8 0 0 1 8 8v44a12 12 0 0 1 0 24v44a8 8 0 0 1-8 8h-48a12 12 0 0 1-24 0h-48a8 8 0 0 1-8-8v-44a12 12 0 0 1 0-24v-44a8 8 0 0 1 8-8z" fill="#FFD84D"/>
           </g>
-          <text x="210" y="170" text-anchor="middle" font-size="13">СИСТЕМА</text>
-          <text x="210" y="188" text-anchor="middle" font-size="13">РАЗВИТИЯ</text>
-          <text x="210" y="206" text-anchor="middle" font-size="13">РЕБЁНКА</text>
-          <!-- labels -->
-          <text x="125" y="51" text-anchor="middle" font-size="12">РЕЧЬ</text>
-          <text x="265" y="45" text-anchor="middle" font-size="12">ДВИЖЕНИЕ</text>
-          <text x="355" y="131" text-anchor="middle" font-size="12">СЕНСОРИКА</text>
-          <text x="58" y="141" text-anchor="middle" font-size="12">ИГРА</text>
-          <text x="355" y="231" text-anchor="middle" font-size="12">МАМА</text>
-          <text x="68" y="246" text-anchor="middle" font-size="12">СРЕДА</text>
-          <text x="210" y="309" text-anchor="middle" font-size="11.5">САМОСТОЯТЕЛЬНОСТЬ</text>
+          <text x="210" y="165" text-anchor="middle" font-size="11.5">ИЗ ЧЕГО</text>
+          <text x="210" y="181" text-anchor="middle" font-size="11.5">СКЛАДЫВАЕТСЯ</text>
+          <text x="210" y="197" text-anchor="middle" font-size="11.5">РАЗВИТИЕ</text>
+          <text x="210" y="213" text-anchor="middle" font-size="11.5">РЕБЁНКА</text>
+          <text x="115" y="49" text-anchor="middle" font-size="12">РЕЧЬ</text>
+          <text x="280" y="43" text-anchor="middle" font-size="12">ДВИЖЕНИЕ</text>
+          <text x="358" y="139" text-anchor="middle" font-size="12">СЕНСОРИКА</text>
+          <text x="56" y="147" text-anchor="middle" font-size="12">ИГРА</text>
+          <text x="358" y="249" text-anchor="middle" font-size="12">МАМА</text>
+          <text x="66" y="257" text-anchor="middle" font-size="12">СРЕДА</text>
+          <text x="210" y="327" text-anchor="middle" font-size="11.5">САМОСТОЯТЕЛЬНОСТЬ</text>
         </svg>
       </div>
       <div class="hand-note">Все важные части вместе</div>
@@ -663,7 +659,7 @@ section[id]{scroll-margin-top:80px}
         </ul>
       </div>
     </div>
-    <div class="quote"><span class="ic">💛</span>«Я наконец-то знаю, что делать и вижу результаты!»</div>
+    <img class="shot-img" src="img/change-quote.jpg" alt="Спасибо за курс, я теперь поняла как заниматься с дочкой и сама стала более дисциплинированной" loading="lazy" data-zoom>
   </section>
 
   <!-- БЛОК 8. 15–20 МИНУТ -->
@@ -672,15 +668,24 @@ section[id]{scroll-margin-top:80px}
     <p>Чтобы развивать ребёнка, не нужно превращаться в воспитателя на полный день.</p>
     <div class="mini-videos">
       <figure>
-        <div class="ph video" data-slot="video-game"><span class="play"></span></div>
+        <div class="vbox" data-vbox>
+          <video src="video/01-igra.mp4" poster="video/01-igra.jpg" muted playsinline loop preload="metadata"></video>
+          <span class="play"></span>
+        </div>
         <figcaption>Игра<small>короткое видео</small></figcaption>
       </figure>
       <figure>
-        <div class="ph video" data-slot="video-home"><span class="play"></span></div>
+        <div class="vbox" data-vbox>
+          <video src="video/02-byt.mp4" poster="video/02-byt.jpg" muted playsinline loop preload="metadata"></video>
+          <span class="play"></span>
+        </div>
         <figcaption>Быт<small>короткое видео</small></figcaption>
       </figure>
       <figure>
-        <div class="ph video" data-slot="video-walk"><span class="play"></span></div>
+        <div class="vbox" data-vbox>
+          <video src="video/03-progulka.mp4" poster="video/03-progulka.jpg" muted playsinline loop preload="metadata"></video>
+          <span class="play"></span>
+        </div>
         <figcaption>Прогулка<small>короткое видео</small></figcaption>
       </figure>
     </div>
@@ -689,12 +694,12 @@ section[id]{scroll-margin-top:80px}
 
   <!-- БЛОК 9. РЕЧЬ -->
   <section class="card speech">
-    <h2>Меня больше всего беспокоит речь…</h2>
-    <div class="pain-grid">
-      <div class="bubble">«Мало слов»</div>
-      <div class="bubble">«Повторяет, но сам не говорит»</div>
-      <div class="bubble">«Не говорит фразами»</div>
-      <div class="bubble">«Не понимаю, как сделать так, чтобы появились новые слова»</div>
+    <h2>Меня больше всего беспокоит речь… <span class="tag red">вот, что пишут мамы</span></h2>
+    <div class="shots">
+      <img class="shot-img" src="img/speech-1.jpg" alt="Я переживаю что он отстаёт от сверстников сильно, в том что не разговаривает" loading="lazy" data-zoom>
+      <img class="shot-img" src="img/speech-2.jpg" alt="Я переживаю насчет того, сколько слов он должен приблизительно говорить" loading="lazy" data-zoom>
+      <img class="shot-img" src="img/speech-3.jpg" alt="Возраст 1.3, количество слов 2, беспокоит, что в этом возрасте это мало слов" loading="lazy" data-zoom>
+      <img class="shot-img" src="img/speech-4.jpg" alt="Есть огромное желание слышать красивую и богатую речь своего малыша" loading="lazy" data-zoom>
     </div>
     <div class="plate">
       <div class="ic">💬</div>
@@ -707,11 +712,11 @@ section[id]{scroll-margin-top:80px}
   <section class="card">
     <h2>Почему система работает лучше, чем ещё один совет или курс</h2>
     <table class="tbl">
-      <thead><tr><th>Альтернатива</th><th>Её ограничение</th><th>Что даёт ПАЗЛ</th></tr></thead>
+      <thead><tr><th>Альтер&shy;натива</th><th>Её ограничение</th><th>Что даёт ПАЗЛ</th></tr></thead>
       <tbody>
         <tr><td>Reels и статьи</td><td>Дают идею на один раз, без понимания «что дальше»</td><td>Логику и последовательность: что делать сегодня, что через месяц</td></tr>
-        <tr><td>Развивающий центр</td><td>1–2 занятия в неделю по расписанию, остальные дни без структуры</td><td>Программу на каждый день, без дороги и привязки к расписанию</td></tr>
-        <tr><td>Найм специалиста</td><td>Стоит в разы дороже и решает одну узкую задачу</td><td>Все направления развития сразу: речь, движение, самостоятельность</td></tr>
+        <tr><td>Развиваю&shy;щий центр</td><td>1–2 занятия в неделю по расписанию, остальные дни без структуры</td><td>Программу на каждый день, без дороги и привязки к расписанию</td></tr>
+        <tr><td>Найм специа&shy;листа</td><td>Стоит в разы дороже и решает одну узкую задачу</td><td>Все направления развития сразу: речь, движение, самостоятельность</td></tr>
         <tr><td>«Разберусь сама»</td><td>Требует времени на поиск и проверку информации</td><td>Уже проверенную систему, готовую к применению за 15–20 минут в день</td></tr>
       </tbody>
     </table>
@@ -721,33 +726,21 @@ section[id]{scroll-margin-top:80px}
   <!-- БЛОК 11. ОТЗЫВЫ О РЕЧИ -->
   <section class="card" id="reviews">
     <h2>А вот что замечают мамы во время занятий</h2>
-    <p class="note" style="font-size:13px;margin-top:-6px">Реальные сообщения о прогрессе в речи</p>
-    <div class="carousel" data-carousel data-noarrows>
+    <p class="note" style="font-size:13px;margin-top:-6px">Реальные сообщения о прогрессе в речи. Нажмите на скрин, чтобы прочитать целиком.</p>
+    <div class="carousel" data-carousel>
+      <button class="arrow prev" aria-label="Назад"><svg viewBox="0 0 16 16" fill="none" stroke="#3B2A17" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg></button>
+      <button class="arrow next" aria-label="Вперёд"><svg viewBox="0 0 16 16" fill="none" stroke="#3B2A17" stroke-width="2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></button>
       <div class="track">
-        <figure class="shot">
-          <div class="ph screen" data-slot="speech-review-1"><span class="lbl">ЗДЕСЬ СКРИН ОТЗЫВА<small>тема: новые слова</small></span></div>
-          <figcaption class="cap">Новые слова</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="ph screen" data-slot="speech-review-2"><span class="lbl">ЗДЕСЬ СКРИН ОТЗЫВА<small>тема: фразы</small></span></div>
-          <figcaption class="cap">Фразы</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="ph screen" data-slot="speech-review-3"><span class="lbl">ЗДЕСЬ СКРИН ОТЗЫВА<small>тема: понимание речи</small></span></div>
-          <figcaption class="cap">Понимание речи</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="ph screen" data-slot="speech-review-4"><span class="lbl">ЗДЕСЬ СКРИН ОТЗЫВА<small>тема: новые слова</small></span></div>
-          <figcaption class="cap">Новые слова</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="ph screen" data-slot="speech-review-5"><span class="lbl">ЗДЕСЬ СКРИН ОТЗЫВА<small>тема: фразы</small></span></div>
-          <figcaption class="cap">Фразы</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="ph screen" data-slot="speech-review-6"><span class="lbl">ЗДЕСЬ СКРИН ОТЗЫВА<small>тема: понимание речи</small></span></div>
-          <figcaption class="cap">Понимание речи</figcaption>
-        </figure>
+        <figure class="shot"><div class="crop light"><img src="img/rev-1.jpg" alt="За неделю у нас получилось 10-15 слов" loading="lazy" data-zoom><span class="more">Читать целиком</span></div><figcaption class="cap">Новые слова</figcaption></figure>
+        <figure class="shot"><div class="crop light"><img src="img/rev-8.jpg" alt="Каждый день появляется от 4 до 6 новых слов" loading="lazy" data-zoom><span class="more">Читать целиком</span></div><figcaption class="cap">Новые слова</figcaption></figure>
+        <figure class="shot"><div class="crop light"><img src="img/rev-9.jpg" alt="Она говорит предложениями и сложными словами. К речи прилетели как на ракете" loading="lazy" data-zoom><span class="more">Читать целиком</span></div><figcaption class="cap">Фразы и предложения</figcaption></figure>
+        <figure class="shot"><div class="crop light"><img src="img/rev-4.jpg" alt="Появились фразы су эчэ, эти кайта" loading="lazy" data-zoom><span class="more">Читать целиком</span></div><figcaption class="cap">Фразы</figcaption></figure>
+        <figure class="shot"><div class="crop light"><img src="img/rev-7.jpg" alt="Появились глаголы, слов стало 70-75" loading="lazy" data-zoom><span class="more">Читать целиком</span></div><figcaption class="cap">Новые слова и фразы</figcaption></figure>
+        <figure class="shot"><div class="crop light"><img src="img/rev-2.jpg" alt="У нас появились три слога" loading="lazy" data-zoom><span class="more">Читать целиком</span></div><figcaption class="cap">Первые слоги</figcaption></figure>
+        <figure class="shot"><div class="crop light"><img src="img/rev-3.jpg" alt="Новые слова, которые появились за неделю занятий" loading="lazy" data-zoom><span class="more">Читать целиком</span></div><figcaption class="cap">Новые слова</figcaption></figure>
+        <figure class="shot"><div class="crop light"><img src="img/rev-10.jpg" alt="Появился ещё один новый слог, стала больше разговаривать" loading="lazy" data-zoom><span class="more">Читать целиком</span></div><figcaption class="cap">Понимание речи</figcaption></figure>
+        <figure class="shot"><div class="crop light"><img src="img/rev-6.jpg" alt="Появилось новое слово Вода. По поводу горшка отличный результат" loading="lazy" data-zoom><span class="more">Читать целиком</span></div><figcaption class="cap">Новые слова и горшок</figcaption></figure>
+        <figure class="shot"><div class="crop light"><img src="img/rev-5.jpg" alt="Появилась расслабленность и удовольствие во время игр" loading="lazy" data-zoom><span class="more">Читать целиком</span></div><figcaption class="cap">Удовольствие от игр</figcaption></figure>
       </div>
       <div class="dots"></div>
     </div>
@@ -758,10 +751,10 @@ section[id]{scroll-margin-top:80px}
     <h2>Реальная история. Как система работает в жизни</h2>
     <p class="note" style="font-size:13px;margin-top:-6px">Айгуль, мама сына (1,8 года), Алматы</p>
     <div class="story4">
-      <figure class="shot"><div class="ph screen" data-slot="story-1"><span class="lbl">ЗДЕСЬ СКРИН</span></div><figcaption class="cap">Старт</figcaption></figure>
-      <figure class="shot"><div class="ph screen" data-slot="story-2"><span class="lbl">ЗДЕСЬ СКРИН</span></div><figcaption class="cap">Новые слова</figcaption></figure>
-      <figure class="shot"><div class="ph screen" data-slot="story-3"><span class="lbl">ЗДЕСЬ СКРИН</span></div><figcaption class="cap">Игры</figcaption></figure>
-      <figure class="shot"><div class="ph screen" data-slot="story-4"><span class="lbl">ЗДЕСЬ СКРИН</span></div><figcaption class="cap">Результат</figcaption></figure>
+      <figure class="shot"><div class="ph" style="aspect-ratio:3/4" data-slot="story-1"><span class="lbl">ЗДЕСЬ СКРИН</span></div><figcaption class="cap">Старт</figcaption></figure>
+      <figure class="shot"><div class="ph" style="aspect-ratio:3/4" data-slot="story-2"><span class="lbl">ЗДЕСЬ СКРИН</span></div><figcaption class="cap">Новые слова</figcaption></figure>
+      <figure class="shot"><div class="ph" style="aspect-ratio:3/4" data-slot="story-3"><span class="lbl">ЗДЕСЬ СКРИН</span></div><figcaption class="cap">Игры</figcaption></figure>
+      <figure class="shot"><div class="ph" style="aspect-ratio:3/4" data-slot="story-4"><span class="lbl">ЗДЕСЬ СКРИН</span></div><figcaption class="cap">Результат</figcaption></figure>
     </div>
     <div class="quote" style="margin-top:8px"><span class="ic">💛</span>«Через месяц занятий мы увидели первые фразы, и теперь я точно знаю, что делать дальше.»</div>
   </section>
@@ -775,7 +768,7 @@ section[id]{scroll-margin-top:80px}
   <section class="card author">
     <h2>Об авторе</h2>
     <div class="top">
-      <div class="ph photo" data-slot="author-photo"><span class="lbl">ФОТО<small>автора</small></span></div>
+      <img src="img/author.jpg" alt="Айгерим Сугралиева с ребёнком" width="700" height="875" loading="lazy">
       <div>
         <div class="name">Я Айгерим Сугралиева</div>
         <div class="role">детский нейропсихолог и мама</div>
@@ -783,11 +776,9 @@ section[id]{scroll-margin-top:80px}
       </div>
     </div>
     <p class="about">В ПАЗЛе я собрала систему, которую мама может применять дома в обычной жизни.</p>
-    <div class="creds">
-      <div><div class="ic">🎓</div>Образование</div>
-      <div><div class="ic">🧠</div>Специализация</div>
-      <div><div class="ic">💼</div>Опыт работы</div>
-      <div><div class="ic">👨‍👩‍👧</div>Более 320+ семей уже занимаются по системе</div>
+    <div class="families">
+      <div class="num">490+<small>семей</small></div>
+      <p>уже занимаются по системе ПАЗЛ и видят результаты у своих детей</p>
     </div>
   </section>
 
@@ -804,9 +795,9 @@ section[id]{scroll-margin-top:80px}
       <li class="more"><div class="ic" style="background:#fff">➕</div><div><b>+ другие модули</b><span>укажите актуальные названия из вашей программы</span></div></li>
     </ul>
     <div class="updates">
-      <h4><em>NEW</em> Обновления внутри</h4>
+      <h4><em>🎁</em> Получаете в подарок при регистрации в первые 24 часа после обращения</h4>
       <ul class="checks">
-        <li>Гайд по настольным играм от 1 года до 3 лет (с бюджетными аналогами и ссылками)</li>
+        <li>Гайд по настольным играм от 1 года до 3 лет (с бюджетными аналогами и ссылками на WB)</li>
         <li>30+ нейроигр на всестороннее развитие ребёнка: вестибулярная и проприоцептивная системы, схема тела, межполушарные связи, мозжечковая стимуляция</li>
       </ul>
     </div>
@@ -815,50 +806,64 @@ section[id]{scroll-margin-top:80px}
   <!-- БЛОК 15. КАК ВЫГЛЯДИТ ВНУТРИ -->
   <section class="card inside">
     <h2>Вот как ПАЗЛ выглядит внутри</h2>
-    <div class="row">
-      <div class="ph phone" data-slot="inside-phone"><span class="lbl">ЗДЕСЬ СКРИН<small>интерфейс на телефоне</small></span></div>
-      <ul class="checks">
-        <li>Видео-уроки и эфиры</li>
-        <li>Телеграм-канал с занятиями</li>
-        <li>Чат поддержки</li>
-        <li>PDF-гайды и чек-листы</li>
-        <li>Планы занятий</li>
-        <li>Удобно смотреть с телефона</li>
-      </ul>
+    <p class="note" style="font-size:13px;margin-top:-6px">Разделы закрытой группы курса. Нажмите, чтобы увеличить.</p>
+    <div class="shots two">
+      <div class="crop" style="--ch:300px"><img src="img/inside-1.jpg" alt="Разделы курса: Начало тут, Теория, Планы занятий, База упражнений, Воспитание" loading="lazy" data-zoom><span class="more">Увеличить</span></div>
+      <div class="crop" style="--ch:300px"><img src="img/inside-2.jpg" alt="Разделы курса: Чат, Полезные гайды, Нейроигры на каждый день, Горшок, Дом для ребёнка" loading="lazy" data-zoom><span class="more">Увеличить</span></div>
     </div>
+    <ul class="checks">
+      <li>Видео-уроки и эфиры</li>
+      <li>Телеграм-канал с занятиями</li>
+      <li>Чат поддержки</li>
+      <li>PDF-гайды и чек-листы</li>
+      <li>Планы занятий</li>
+      <li>Удобно смотреть с телефона</li>
+    </ul>
     <p class="note">Открыли, посмотрели, применили с ребёнком. Вам не нужно запоминать всё: материалы всегда под рукой.</p>
   </section>
 
   <!-- БЛОК 16. ЕЩЁ ОТЗЫВЫ -->
-  <section class="card">
+  <section class="card" id="more-reviews">
     <h2>Ещё отзывы. Мамы применяют систему дома</h2>
-    <div class="rev4">
-      <div class="ph" data-slot="review-games"><span class="lbl">ЗДЕСЬ СКРИН<small>про игры</small></span></div>
-      <div class="ph" data-slot="review-home"><span class="lbl">ЗДЕСЬ СКРИН<small>про быт</small></span></div>
-      <div class="ph" data-slot="review-independence"><span class="lbl">ЗДЕСЬ СКРИН<small>про самостоятельность</small></span></div>
-      <div class="ph" data-slot="review-understanding"><span class="lbl">ЗДЕСЬ СКРИН<small>про понимание</small></span></div>
+    <p class="note" style="font-size:13px;margin-top:-6px">Нажмите на скрин, чтобы прочитать целиком.</p>
+    <div class="shots two" style="margin-bottom:12px">
+      <div class="crop" style="--ch:260px"><img src="img/more-4.jpg" alt="Ценность курса гораздо выше его стоимости" loading="lazy" data-zoom><span class="more">Читать</span></div>
+      <div class="crop" style="--ch:260px"><img src="img/more-6.jpg" alt="Словарный запас увеличился в 2 раза за месяц" loading="lazy" data-zoom><span class="more">Читать</span></div>
+      <div class="crop" style="--ch:260px"><img src="img/more-5.jpg" alt="Курс Пазл это как волшебная таблетка для тревожной мамы" loading="lazy" data-zoom><span class="more">Читать</span></div>
+      <div class="crop" style="--ch:260px"><img src="img/more-1.jpg" alt="А тут просто бери и делай. Каждый день 2-3 новых слова" loading="lazy" data-zoom><span class="more">Читать</span></div>
+      <div class="crop" style="--ch:260px"><img src="img/more-3.jpg" alt="Этот курс должны пройти все мамочки" loading="lazy" data-zoom><span class="more">Читать</span></div>
+      <div class="crop" style="--ch:260px"><img src="img/more-2.jpg" alt="Айгерим, спасибо за потрясающий курс. Поражена полезностью" loading="lazy" data-zoom><span class="more">Читать</span></div>
     </div>
-    <a href="#more-reviews" class="btn ghost wide">Посмотреть ещё отзывы →</a>
+    <a href="#reviews" class="btn ghost wide">Посмотреть ещё отзывы →</a>
   </section>
 
-  <!-- БЛОК 17. БОНУСНЫЙ МОДУЛЬ -->
+  <!-- БЛОК 17. ПОДАРКИ -->
   <section class="card bonus">
     <div class="head">
       <svg viewBox="0 0 48 48"><rect x="6" y="18" width="36" height="24" rx="4" fill="#E85D5D"/><rect x="4" y="12" width="40" height="10" rx="3" fill="#FF7B7B"/><rect x="21" y="12" width="6" height="30" fill="#FFD84D"/><path d="M24 12c-4-7-12-6-10-1 1 3 6 2 10 1zm0 0c4-7 12-6 10-1-1 3-6 2-10 1z" fill="#FFD84D"/></svg>
-      <h3>Бонусный модуль «Забота о маме»</h3>
+      <h3>В подарок при регистрации сейчас</h3>
     </div>
-    <div class="price"><s>7 900 ₸ (~1 200 ₽ / ~15 $)</s> <em>в подарок при регистрации сейчас</em></div>
-    <div class="row">
-      <ul class="checks yellow">
-        <li>Как справляться с тревогой и усталостью</li>
-        <li>Простые практики</li>
-        <li>Как вернуть себе ресурс</li>
-      </ul>
-      <div class="imgwrap">
-        <div class="ph photo sq" data-slot="bonus-photo"><span class="lbl">ФОТО<small>мама с ребёнком</small></span></div>
-        <div class="hand-note">Спокойная мама, счастливый ребёнок</div>
-      </div>
-    </div>
+    <ul class="gift-list">
+      <li>
+        <b>Бонусный модуль «Забота о маме»</b>
+        <ul class="checks yellow">
+          <li>Как справляться с тревогой и усталостью</li>
+          <li>Простые практики</li>
+          <li>Как вернуть себе ресурс</li>
+        </ul>
+        <span class="pr"><s>7 900 ₸ (~1 200 ₽ / ~15 $)</s> <em>в подарок</em></span>
+      </li>
+      <li>
+        <b>Гайд по настольным играм от 1 до 3 лет</b>
+        <small>с бюджетными аналогами и ссылками на WB</small>
+        <span class="pr"><s data-price="guide">____ ₸</s> <em>в подарок</em></span>
+      </li>
+      <li>
+        <b>30+ нейроигр на всестороннее развитие ребёнка</b>
+        <small>вестибулярная, проприоцептивная системы, схема тела, развитие межполушарных связей, мозжечковая стимуляция</small>
+        <span class="pr"><s data-price="neuro">____ ₸</s> <em>в подарок</em></span>
+      </li>
+    </ul>
   </section>
 
   <!-- БЛОК 18. ЦЕНА -->
@@ -895,29 +900,30 @@ section[id]{scroll-margin-top:80px}
     <h2>Частые вопросы</h2>
     <details><summary>С какого возраста подойдёт курс?</summary><div class="ans">ПАЗЛ рассчитан на детей от 1 года до 3,5 лет. Материалы разбиты по возрастным этапам, поэтому вы начинаете с того, что актуально именно сейчас, и постепенно усложняете занятия вместе с ребёнком.</div></details>
     <details><summary>Подойдёт ли, если ребёнок мало говорит?</summary><div class="ans">Да. Внутри есть отдельный блок «Речь»: как поддерживать появление новых слов через игру, движение, сенсорный опыт и повседневное общение. При этом программа не заменяет консультацию специалиста, если она нужна.</div></details>
-    <details><summary>Сколько времени нужно в день?</summary><div class="ans">15–20 минут. Занятия встраиваются в обычную жизнь: на кухне, на прогулке, в ванной, во время одевания. Отдельно выделять время «за столом» не нужно.</div></details>
+    <details><summary>Сколько времени нужно в день?</summary><div class="ans">15–20 минут. Занятия встраиваются в обычную жизнь.</div></details>
     <details><summary>Нужно ли покупать игрушки?</summary><div class="ans">Нет. Большинство игр строится на том, что уже есть дома. Для тех, кто хочет расширить арсенал, внутри есть гайд по настольным играм с бюджетными аналогами и ссылками.</div></details>
     <details><summary>Где проходит обучение?</summary><div class="ans">Онлайн. Видео-уроки и эфиры, Телеграм-канал с занятиями, чат поддержки, PDF-гайды и чек-листы. Всё удобно смотреть с телефона в любое время.</div></details>
     <details><summary>Останется ли доступ навсегда?</summary><div class="ans">Да. Доступ ко всем материалам, включая будущие обновления, остаётся у вас навсегда.</div></details>
     <details><summary>Можно ли оплатить зарубежной картой?</summary><div class="ans">Да, принимаем Visa и Mastercard любого банка, а также карты МИР. Если возникнут сложности с оплатой, напишите нам в WhatsApp или Telegram, поможем.</div></details>
-    <details><summary>Заменит ли ПАЗЛ занятия с логопедом?</summary><div class="ans">Нет. ПАЗЛ это развивающая программа для родителей. Она помогает создать дома среду, в которой речь развивается естественно, но не заменяет медицинскую, логопедическую или иную индивидуальную помощь специалиста, когда она необходима.</div></details>
+    <details><summary>Заменяет ли ПАЗЛ занятия в развивающих центрах со специалистами?</summary><div class="ans">Да. ПАЗЛ это система, составленная с учётом возрастных особенностей детей от 1 года до 3,5 лет. Она охватывает ключевые направления развития, важные в этом возрасте: речь, движение, сенсорное развитие, игру, мышление, самостоятельность, эмоциональные и социальные навыки.</div></details>
+    <details><summary>Нужен ли ПАЗЛ, если ребёнок уже занимается с логопедом или дефектологом?</summary><div class="ans">Да, ПАЗЛ актуален и в этом случае. Логопед или дефектолог работает с конкретными задачами ребёнка, а ПАЗЛ закрывает вопросы развития дома, дополняя и усиливая занятия у специалиста: через игру, движение, сенсорный опыт, развитие речи, мышления и самостоятельности.</div></details>
   </section>
 
 </div>
 </main>
 
 <!-- ================= ФИНАЛЬНЫЙ БЛОК ================= -->
-<section class="final" id="more-reviews">
+<section class="final">
   <div class="wrap inner">
     <div class="imgwrap">
       <div class="hand-note">Спокойные и счастливые дети рядом ♡</div>
-      <div class="ph photo" data-slot="final-photo"><span class="lbl">ЗДЕСЬ ФОТО<small>мама с двумя детьми</small></span></div>
+      <div class="ph photo rounded" data-slot="final-photo"><span class="lbl">ЗДЕСЬ ФОТО<small>мама с двумя детьми</small></span></div>
     </div>
     <div class="mid">
       <h2>Через месяц у вас всё равно будет вопрос:<br>«Во что сегодня играть с ребёнком?»</h2>
       <p>Можно продолжать искать ответы в Reels и терять их. А можно один раз внедрить систему и пользоваться ей каждый день.</p>
       <div class="timer-row">
-        <div class="cap">До конца набора осталось:</div>
+        <div class="cap">До конца акции осталось:</div>
         <div class="timer" data-timer>
           <div><b data-d>00</b><span>дней</span></div>
           <div><b data-h>00</b><span>часов</span></div>
@@ -937,6 +943,9 @@ section[id]{scroll-margin-top:80px}
   </div>
   <div class="footer">© <span id="year"></span> ПАЗЛ · система развития детей. ПАЗЛ является развивающей программой для родителей и не заменяет помощь специалиста.</div>
 </section>
+
+<!-- ================= LIGHTBOX ================= -->
+<div class="lb" id="lb" aria-hidden="true"><button class="x" aria-label="Закрыть">✕</button><img src="" alt=""></div>
 
 <!-- ================= ПЛАВАЮЩИЕ ЭЛЕМЕНТЫ ================= -->
 <a class="fab wa" id="fab-wa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
@@ -959,10 +968,11 @@ section[id]{scroll-margin-top:80px}
 <script>
 /* ============ НАСТРОЙКИ (поменяйте здесь) ============ */
 const CONFIG = {
-  deadline: '2026-09-25T23:59:59+05:00',   // конец набора (Астана, UTC+5)
+  timerHours: 24,                           // скользящий таймер: у каждого посетителя свои 24 часа с первого захода
   whatsapp: 'https://wa.me/77000000000?text=Здравствуйте!%20Хочу%20узнать%20про%20ПАЗЛ',
   telegram: 'https://t.me/username',
   payLink: '#price',                        // ссылка на оплату / форму
+  prices: { guide: '', neuro: '' },         // цены подарков, например '4 900 ₸ (~750 ₽ / ~9 $)'
   proof: [                                  // виджет соцдоказательства
     {name:'Карина из Алматы', ago:'12 минут назад'},
     {name:'Айгерим из Астаны', ago:'25 минут назад'},
@@ -970,24 +980,36 @@ const CONFIG = {
     {name:'Мадина из Шымкента', ago:'1 час назад'},
     {name:'Алия из Актобе', ago:'2 часа назад'}
   ],
-  proofFirstDelay: 6000,   // мс до первого показа
-  proofInterval: 28000,    // мс между показами
-  proofVisible: 6000       // мс виджет на экране
+  proofFirstDelay: 6000,
+  proofInterval: 28000,
+  proofVisible: 6000
 };
 
-/* ============ ССЫЛКИ ============ */
+/* ============ ССЫЛКИ И ЦЕНЫ ============ */
 document.getElementById('fab-wa').href = CONFIG.whatsapp;
 document.getElementById('fab-tg').href = CONFIG.telegram;
 document.querySelectorAll('[data-pay]').forEach(a => a.href = CONFIG.payLink);
 document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('[data-price]').forEach(s => { const v = CONFIG.prices[s.dataset.price]; if (v) s.textContent = v; });
 
-/* ============ ТАЙМЕР ============ */
+/* ============ ТАЙМЕР 24 ЧАСА (скользящий) ============ */
 (function(){
-  const end = new Date(CONFIG.deadline).getTime();
+  const KEY = 'pazl_deadline';
+  let end = 0;
+  try { end = parseInt(localStorage.getItem(KEY) || '0', 10); } catch(e) {}
+  if (!end || end < Date.now()) {
+    end = Date.now() + CONFIG.timerHours * 3600000;
+    try { localStorage.setItem(KEY, String(end)); } catch(e) {}
+  }
   const timers = document.querySelectorAll('[data-timer]');
   const pad = n => String(n).padStart(2,'0');
   function tick(){
-    let diff = Math.max(0, end - Date.now());
+    let diff = end - Date.now();
+    if (diff <= 0) {
+      end = Date.now() + CONFIG.timerHours * 3600000;
+      try { localStorage.setItem(KEY, String(end)); } catch(e) {}
+      diff = end - Date.now();
+    }
     const d = Math.floor(diff/86400000); diff -= d*86400000;
     const h = Math.floor(diff/3600000);  diff -= h*3600000;
     const m = Math.floor(diff/60000);    diff -= m*60000;
@@ -1015,7 +1037,6 @@ document.querySelectorAll('[data-carousel]').forEach(c => {
   const items = [...track.children];
   const dots = c.querySelector('.dots');
   const prev = c.querySelector('.prev'), next = c.querySelector('.next');
-  if (c.hasAttribute('data-noarrows')) { prev && prev.remove(); next && next.remove(); }
   const perView = () => Math.max(1, Math.round(track.clientWidth / items[0].getBoundingClientRect().width));
   const pages = () => Math.max(1, Math.ceil(items.length / perView()));
   function buildDots(){
@@ -1023,7 +1044,7 @@ document.querySelectorAll('[data-carousel]').forEach(c => {
     for (let i=0;i<pages();i++){ const d=document.createElement('i'); d.addEventListener('click',()=>go(i)); dots.appendChild(d); }
     update();
   }
-  function page(){ const w = track.scrollWidth - track.clientWidth; return w<=0?0:Math.round(track.scrollLeft / (track.clientWidth)); }
+  function page(){ return Math.round(track.scrollLeft / track.clientWidth); }
   function update(){ const p = Math.min(page(), pages()-1); [...dots.children].forEach((d,i)=>d.classList.toggle('on',i===p)); }
   function go(p){ track.scrollTo({left: p*track.clientWidth, behavior:'smooth'}); }
   prev && prev.addEventListener('click', ()=>go(Math.max(0,page()-1)));
@@ -1033,12 +1054,35 @@ document.querySelectorAll('[data-carousel]').forEach(c => {
   buildDots();
 });
 
+/* ============ ВИДЕО ============ */
+document.querySelectorAll('[data-vbox]').forEach(box => {
+  const v = box.querySelector('video');
+  box.addEventListener('click', () => {
+    if (v.paused) {
+      document.querySelectorAll('[data-vbox] video').forEach(o => { if (o !== v) { o.pause(); o.parentElement.classList.remove('playing'); } });
+      v.play(); box.classList.add('playing');
+    } else { v.pause(); box.classList.remove('playing'); }
+  });
+  v.addEventListener('ended', () => box.classList.remove('playing'));
+});
+
+/* ============ LIGHTBOX ============ */
+(function(){
+  const lb = document.getElementById('lb'), img = lb.querySelector('img');
+  document.querySelectorAll('[data-zoom]').forEach(el => el.addEventListener('click', e => {
+    e.preventDefault(); img.src = el.src; img.alt = el.alt; lb.classList.add('open'); lb.scrollTop = 0; document.body.style.overflow = 'hidden';
+  }));
+  function close(){ lb.classList.remove('open'); img.src = ''; document.body.style.overflow = ''; }
+  lb.addEventListener('click', close);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+})();
+
 /* ============ ВИДЖЕТ СОЦДОКАЗАТЕЛЬСТВА ============ */
 (function(){
   const el = document.getElementById('proof');
   const nameEl = document.getElementById('proof-name'), timeEl = document.getElementById('proof-time'), av = document.getElementById('proof-av');
   let i = 0, closed = false, hideT;
-  document.getElementById('proof-x').addEventListener('click', ()=>{ closed = true; el.classList.remove('show'); });
+  document.getElementById('proof-x').addEventListener('click', e => { e.stopPropagation(); closed = true; el.classList.remove('show'); });
   function show(){
     if (closed) return;
     const p = CONFIG.proof[i % CONFIG.proof.length]; i++;
